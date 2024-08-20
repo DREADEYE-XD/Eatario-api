@@ -1,6 +1,6 @@
 datasource db {
   provider = "postgresql"
-  url      = "postgresql://postgres:BUgKAUtOYsaIOyndwyrxwqmhBHxIwZeE@postgres.railway.internal:5432/railway"
+  url      = "postgresql://postgres:BUgKAUtOYsaIOyndwyrxwqmhBHxIwZeE@junction.proxy.rlwy.net:43695/railway"
 }
 
 generator client {
