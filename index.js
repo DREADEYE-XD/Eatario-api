@@ -29,7 +29,7 @@ app.get("/api/category", async (req, res) => {
     res.status(201).send(category);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching users" });
+    res.status(500).json({ error: "An error occurred while fetching category" });
   }
 });
 
@@ -40,7 +40,7 @@ app.get("/api/product", async (req, res) => {
     res.send(product);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching users" });
+    res.status(500).json({ error: "An error occurred while fetching product" });
   }
 });
 
@@ -51,7 +51,7 @@ app.get("/api/getOrders", async (req, res) => {
     res.send(order);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching users" });
+    res.status(500).json({ error: "An error occurred while fetching getOrders" });
   }
 });
 
