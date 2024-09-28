@@ -11,14 +11,12 @@ app.use(express.json());
 
 const port = process.env.PORT || 3001;
 
-// console.log(prisma.category)
-
 app.get("/api/ping", (req, res) => {
   try {
-    res.status(201).json({ message: "Ping success" });
+    res.status(200).json({ message: "Ping success" });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching users" });
+    res.status(500).json({ error: "An error occurred while pinging" });
   }
 });
 
@@ -26,12 +24,10 @@ app.get("/api/category", async (req, res) => {
   try {
     const category = await prisma.category.findMany();
     console.log(category);
-    res.status(201).send(category);
+    res.status(200).json(category);
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching category" });
+    res.status(500).json({ error: "An error occurred while fetching category" });
   }
 });
 
@@ -39,7 +35,7 @@ app.get("/api/product", async (req, res) => {
   try {
     const product = await prisma.product.findMany();
     console.log(product);
-    res.send(product);
+    res.status(200).json(product);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "An error occurred while fetching product" });
@@ -50,21 +46,17 @@ app.get("/api/getOrders", async (req, res) => {
   try {
     const order = await prisma.order.findMany();
     console.log(order);
-    res.send(order);
+    res.status(200).json(order);
   } catch (error) {
     console.log(error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching getOrders" });
+    res.status(500).json({ error: "An error occurred while fetching getOrders" });
   }
 });
 
-// Route to handle order creation
 app.post("/api/createOrder", async (req, res) => {
   const { cartItems, total } = req.body;
 
   try {
-    // Create a new order
     const order = await prisma.order.create({
       data: {
         totalPrice: total,
