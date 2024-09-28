@@ -9,6 +9,9 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
+//For vercel
+app.get("/", (req, res) => res.send("Express on Vercel"));
+
 app.get("/api/ping", (req, res) => {
   try {
     res.status(200).json({ message: "Ping success" });
