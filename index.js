@@ -32,6 +32,7 @@ app.get("/api/category", async (req, res) => {
   }
 });
 
+// some examples
 app.get("/api/product", async (req, res) => {
   try {
     const product = await prisma.product.findMany();
