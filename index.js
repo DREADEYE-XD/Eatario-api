@@ -9,8 +9,6 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
-const port = process.env.PORT || 3001;
-
 app.get("/api/ping", (req, res) => {
   try {
     res.status(200).json({ message: "Ping success" });
@@ -71,17 +69,19 @@ app.post("/api/createOrder", async (req, res) => {
   }
 });
 
-// Create a handler function for Vercel
-const handler = async (req, res) => {
-  await prisma.$connect();
-  return app(req, res);
-};
-
-// Export the handler function
-module.exports = handler;
-
-// Graceful shutdown (this won't be used in Vercel's serverless environment)
-process.on("SIGINT", async () => {
-  await prisma.$disconnect();
-  process.exit(0);
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something broke!');
 });
+
+// For local development
+if (require.main === module) {
+  const port = process.env.PORT || 3001;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+}
+
+// For Vercel
+module.exports = app;
