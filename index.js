@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const { PrismaClient } = require("@prisma/client");
-require('dotenv').config();
+require("dotenv").config();
 
 const app = express();
 const prisma = new PrismaClient();
@@ -29,7 +29,9 @@ app.get("/api/category", async (req, res) => {
     res.status(201).send(category);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching category" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching category" });
   }
 });
 
@@ -51,7 +53,9 @@ app.get("/api/getOrders", async (req, res) => {
     res.send(order);
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "An error occurred while fetching getOrders" });
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching getOrders" });
   }
 });
 
@@ -75,24 +79,17 @@ app.post("/api/createOrder", async (req, res) => {
   }
 });
 
-async function startServer() {
-  try {
-    await prisma.$connect();
-    console.log("Connected to the database");
-    app.listen(port, () => console.log(`Server running on port ${port}`));
-  } catch (error) {
-    console.error("Failed to connect to the database:", error);
-    process.exit(1);
-  }
-}
+// Create a handler function for Vercel
+const handler = async (req, res) => {
+  await prisma.$connect();
+  return app(req, res);
+};
 
-startServer();
+// Export the handler function
+module.exports = handler;
 
-// Graceful shutdown
+// Graceful shutdown (this won't be used in Vercel's serverless environment)
 process.on("SIGINT", async () => {
   await prisma.$disconnect();
   process.exit(0);
 });
-
-// Export the handler function
-module.exports = handler;
