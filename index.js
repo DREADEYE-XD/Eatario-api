@@ -9,7 +9,7 @@ const prisma = new PrismaClient();
 app.use(cors());
 app.use(express.json());
 
-const PORT = process.env.PORT || 3002;
+const port = process.env.PORT || 3001;
 
 // console.log(prisma.category)
 
@@ -75,6 +75,24 @@ app.post("/api/createOrder", async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+async function startServer() {
+  try {
+    await prisma.$connect();
+    console.log("Connected to the database");
+    app.listen(port, () => console.log(`Server running on port ${port}`));
+  } catch (error) {
+    console.error("Failed to connect to the database:", error);
+    process.exit(1);
+  }
+}
+
+startServer();
+
+// Graceful shutdown
+process.on("SIGINT", async () => {
+  await prisma.$disconnect();
+  process.exit(0);
 });
+
+// Export the handler function
+module.exports = handler;
